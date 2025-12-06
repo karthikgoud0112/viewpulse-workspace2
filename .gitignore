@@ -1,0 +1,6 @@
+/.metadata/
+/viewpulse-backend/target/
+/viewpulse-ai/__pycache__/
+/viewpulse-ai/.venv/
+/viewpulse-ai/venv/
+

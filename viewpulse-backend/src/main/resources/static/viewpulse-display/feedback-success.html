@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Thank you — Feedback received</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { background:#0b1220; color:#fff; font-family:Arial,Helvetica,sans-serif; display:flex; align-items:center; justify-content:center; height:100vh; margin:0; }
+    .card { background:linear-gradient(135deg,#0f1724,#122235); padding:28px; border-radius:12px; width:90%; max-width:540px; box-shadow:0 8px 30px rgba(2,6,23,0.6); text-align:center; }
+    h1{ margin:0 0 8px; font-size:28px; }
+    p{ margin:6px 0 14px; color:#cbd5e1; }
+    .emotion { font-size:44px; margin:10px 0; }
+    .meta { font-size:14px; color:#94a3b8; margin-top:8px; }
+    .btn { display:inline-block; margin-top:16px; padding:10px 16px; border-radius:8px; background:#2563eb; color:white; text-decoration:none; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Thank you for your feedback!</h1>
+    <div id="emotionBlock">
+      <div id="emotionEmoji" class="emotion">🔎</div>
+      <div id="emotionText" style="font-size:20px; font-weight:700;">Detecting emotion…</div>
+      <div id="confidence" class="meta"></div>
+    </div>
+    <p id="extraText">We analysed the text and detected the emotion from your message.</p>
+    <a class="btn" href="ads.html">Back to ads</a>
+  </div>
+
+<script>
+(function(){
+  function q(v) {
+    const params = new URLSearchParams(location.search);
+    return params.get(v);
+  }
+  const emotion = (q('emotion') || '').toLowerCase();
+  const confidence = q('confidence') || '';
+  const eid = q('feedback_id') || '';
+
+  const emojiMap = {
+    joy: '😊',
+    love: '❤️',
+    surprise: '😮',
+    sadness: '😔',
+    anger: '😡',
+    fear: '😨',
+    neutral: '😐'
+  };
+
+  const emot = document.getElementById('emotionText');
+  const emotEmoji = document.getElementById('emotionEmoji');
+  const confEl = document.getElementById('confidence');
+
+  if (!emotion) {
+    emot.textContent = 'No emotion detected';
+    emotEmoji.textContent = '❓';
+    confEl.textContent = '';
+  } else {
+    emot.textContent = emotion.charAt(0).toUpperCase() + emotion.slice(1);
+    emotEmoji.textContent = emojiMap[emotion] || '🔎';
+    if (confidence) {
+      const num = Number(confidence);
+      if (!Number.isNaN(num)) {
+        confEl.textContent = 'Confidence: ' + Math.round(num * 100) + '%';
+      } else {
+        confEl.textContent = 'Confidence: ' + confidence;
+      }
+    } else {
+      confEl.textContent = '';
+    }
+  }
+
+  // Optional: if you need to log the user seeing success page, you could call backend here
+  // e.g. fetch('/api/feedback/ack?feedback_id=' + encodeURIComponent(eid));
+
+})();
+</script>
+</body>
+</html>
